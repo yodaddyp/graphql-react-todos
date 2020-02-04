@@ -1,0 +1,51 @@
+# You'll need docker and docker-compose installed to use this. Create the services with:
+#
+#     docker-compose up -d
+#
+# Stop them with:
+#
+#     docker-compose stop
+#
+# For more information see: https://docs.docker.com/compose/compose-file/
+
+version: "3"
+services:
+  db:
+    image: "postgres:12-alpine"
+    container_name: "postgres_todos"
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_todos:/var/lib/postgresql/data
+    networks:
+      - backend
+    environment:
+      - DB_PORT
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  graphql-engine:
+    image: hasura/graphql-engine:v1.0.0-beta.10.cli-migrations
+    ports:
+      - "${HASURA_PORT}:8080"
+    depends_on:
+      - "db"
+    volumes:
+      - ./packages/database/migrations:/hasura-migrations
+    environment:
+      - HASURA_PORT
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://${DB_USER}:${DB_PASS}@host.docker.internal:${DB_PORT}/${DB_NAME}
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=${HASURA_ENABLE_CONSOLE}
+      - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup, http-log, webhook-log, websocket-log, query-log
+      - HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_ADMIN_SECRET}
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  postgres_todos:
