@@ -7,12 +7,6 @@
 * Docker Compose
 
 ## Startup
-Up services with:
-```bash
-docker-compose up -d
-```
-
-Install and run application with:
-```bash
-npm i && npm start
-```
+1. Create `.env` file and add environment variables based on `.env-sanple` file.
+2. Up services with: `docker-compose up -d`
+3. Install and run application with: `npm i && npm start`
