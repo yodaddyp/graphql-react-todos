@@ -5,7 +5,7 @@ import Todo from './Todo';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper // TODO remove this does nothing now
     }
 }));
 
