@@ -55,7 +55,7 @@ export default function DialogForm({ open, onClose, onSave }) {
                         autoFocus
                         margin="dense"
                         id="todo"
-                        label="Todo or not todo"
+                        label="Todo"
                         type="text"
                         fullWidth
                         onChange={handleTodoChange}
