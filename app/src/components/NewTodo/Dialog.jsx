@@ -14,7 +14,14 @@ export default function DialogForm({ open, onClose, onSave }) {
     const [dueDate, setDueDate] = React.useState(new Date());
     const [todo, setTodo] = React.useState();
 
+    // Crude way of preventing submitting without required fields.
+    // Could really do with some proper error validation.
     const canSave = !!(todo && dueDate);
+
+    const restoreDefaults = () => {
+        setTodo(null);
+        setDueDate(new Date());
+    };
 
     const handleDateChange = date => {
         setDueDate(date);
@@ -28,10 +35,16 @@ export default function DialogForm({ open, onClose, onSave }) {
     const handleSave = (e) => {
         e.preventDefault();
         onSave({ dueDate, todo });
+        restoreDefaults();
+    };
+
+    const handleClose = (e) => {
+        restoreDefaults();
+        onClose(e);
     };
 
     return (
-        <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <form noValidate autoComplete="off" onSubmit={handleSave}>
                 <DialogTitle id="form-dialog-title">Add New Todo</DialogTitle>
                 <DialogContent>
@@ -66,7 +79,7 @@ export default function DialogForm({ open, onClose, onSave }) {
                     <Button disabled={!canSave} type="submit" color="primary">
                         Save
                     </Button>
-                    <Button onClick={onClose} color="secondary">
+                    <Button onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
                 </DialogActions>
