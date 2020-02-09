@@ -14,16 +14,21 @@ import Paper from '@material-ui/core/Paper';
 import Todos from './containers/Todos';
 import NewTodo from './containers/NewTodo';
 
-const API_ENDPOINT = `http://localhost:8080/v1/graphql`;
+const API_ENDPOINT = `${process.env.HASURA_HOST}:${process.env.HASURA_PORT}/v1/graphql`;
 
 const headers = {
     'content-type': 'application/json',
-    'x-hasura-admin-secret': 'mysecret',
+    // It is clearly not a very good idea to expose the admin secret on the client.
+    // Before considering a production/staging release proper authentication needs to be setup protecting the GraphQL
+    // endpoints and the database.
+    // Hasura supports JWT authentication and the recommended approach is to use Auth0 or Firebase.
+    // Local authentication can also be setup.
+    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET
 };
 
 const httpLink = new HttpLink({
     headers,
-    uri: API_ENDPOINT
+    uri: `http://${API_ENDPOINT}`
 });
 
 const webSocketLink = new WebSocketLink({
@@ -32,7 +37,7 @@ const webSocketLink = new WebSocketLink({
         reconnect: true,
         connectionParams: () => ({ headers })
     },
-    uri: "ws://localhost:8080/v1/graphql"
+    uri: `ws://${API_ENDPOINT}`
 });
 
 // using the ability to split links, you can send data to each link
@@ -41,7 +46,6 @@ const link = split(
     // split based on operation type
     ({ query }) => {
         const { kind, operation } = getMainDefinition(query);
-        console.log(kind, operation);
         return kind === 'OperationDefinition' && operation === 'subscription';
     },
     webSocketLink,
