@@ -12,13 +12,13 @@
 3. Install and run application by running `npm i && npm start` in the `app` folder.
 
 ## Todo
-* Properly authenticate the GraphQL enpoint
+* Properly authenticate and protect the GraphQL endpoint
   * The current setup exposes the Hasura Admin secret which is obviously bad!
-* User authentication with Firebase/Auth0 (other service)
-  * The current implementation uses
+  * (Along with some other environment variables which shouldn't be exposed on the client)
+* User authentication with Firebase/Auth0 (other service) or local jwt auth via an Express App
 * App localisation (react-redux)
 * Offline PWA (Service Workers)
 * Integration tests
   * Cucumber/Selenium
 * Unit tests
-  * Jest is running but code coverage is poor
+  * Jest is running but code coverage is very poor
