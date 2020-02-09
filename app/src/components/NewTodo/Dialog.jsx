@@ -11,15 +11,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
 export default function DialogForm({ open, onClose, onSave }) {
-    const [dueDate, setDueDate] = React.useState(new Date());
-    const [todo, setTodo] = React.useState();
+    const [due, setDueDate] = React.useState(new Date());
+    const [text, setTodoText] = React.useState();
 
     // Crude way of preventing submitting without required fields.
     // Could really do with some proper error validation.
-    const canSave = !!(todo && dueDate);
+    const canSave = !!(text && due);
 
     const restoreDefaults = () => {
-        setTodo(null);
+        setTodoText(null);
         setDueDate(new Date());
     };
 
@@ -29,12 +29,12 @@ export default function DialogForm({ open, onClose, onSave }) {
 
     const handleTodoChange = e => {
         const { value } = e.currentTarget;
-        setTodo(value);
+        setTodoText(value);
     };
 
     const handleSave = (e) => {
         e.preventDefault();
-        onSave({ dueDate, todo });
+        onSave({ due, text });
         restoreDefaults();
     };
 
@@ -67,7 +67,7 @@ export default function DialogForm({ open, onClose, onSave }) {
                             id="date-picker-dialog"
                             label="Due date"
                             format="dd/MM/yyyy"
-                            value={dueDate}
+                            value={due}
                             onChange={handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
