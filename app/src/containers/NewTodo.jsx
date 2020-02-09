@@ -18,7 +18,7 @@ const ADD_TODO = gql`
 export default function NewTodoContainer() {
     return (
         <Mutation mutation={ADD_TODO}>
-            {(addTodo, { data }) => (
+            {addTodo => (
                 <NewTodo onSave={variables => addTodo({ variables })} />
             )}
         </Mutation>
