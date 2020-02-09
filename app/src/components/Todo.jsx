@@ -4,9 +4,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-export default function Todo({ completed, due, id, text }) {
-    const [checked, setChecked] = React.useState(!!completed);
-
+export default function Todo({ completed, due, id, onCheck, text }) {
+    const checked = !!completed;
     const labelId = `label-${id}`;
     const primary = text;
     const secondary = checked
@@ -14,7 +13,7 @@ export default function Todo({ completed, due, id, text }) {
       : `Due on ${due}`;
 
     return (
-        <ListItem role={undefined} dense button onClick={() => setChecked(!checked)}>
+        <ListItem role={undefined} dense button onClick={onCheck}>
             <ListItemIcon>
                 <Checkbox
                     checked={checked}

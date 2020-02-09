@@ -2,11 +2,11 @@ import React from 'react';
 import { gql } from 'apollo-boost';
 import { Subscription } from '@apollo/react-components';
 import List from '@material-ui/core/List';
-import Todo from './../components/Todo';
+import Todo from './Todo';
 
 const FETCH_TODOS = gql`
 subscription fetchTodos {
-  todos(order_by: {createdAt: desc, completed: asc_nulls_first}) {
+  todos(order_by: {createdAt: desc}) {
     id
     text
     due
@@ -26,7 +26,7 @@ export default function Todos() {
 
                     const { todos } = data;
                     return todos.map(todo => (
-                        <Todo {...todo} />
+                        <Todo key={todo.id} {...todo} />
                     ))
                 }}
             </Subscription>
