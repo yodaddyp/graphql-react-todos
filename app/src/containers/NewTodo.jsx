@@ -14,12 +14,10 @@ mutation addTodo($text: String!, $due: date!) {
   }
 }`;
 
-export default function NewTodoContainer() {
-    return (
-        <Mutation mutation={ADD_TODO}>
-            {addTodo => (
-                <NewTodo onSave={variables => addTodo({ variables })} />
-            )}
-        </Mutation>
-    );
-}
+export default () => (
+    <Mutation mutation={ADD_TODO}>
+        {addTodo => (
+            <NewTodo onSave={variables => addTodo({ variables })} />
+        )}
+    </Mutation>
+);
