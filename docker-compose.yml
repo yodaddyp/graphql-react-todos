@@ -35,7 +35,7 @@ services:
     depends_on:
       - "db"
     volumes:
-      - ./packages/database/migrations:/hasura-migrations
+      - ./database/migrations:/hasura-migrations
     environment:
       - HASURA_PORT
       - HASURA_GRAPHQL_DATABASE_URL=postgres://${DB_USER}:${DB_PASS}@host.docker.internal:${DB_PORT}/${DB_NAME}
